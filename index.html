@@ -102,7 +102,7 @@
             margin-bottom: 1.2rem; 
             padding-bottom: 0;
             font-weight: 600;
-            text-align: center; /* Enforces absolute center alignment */
+            text-align: center;
         }
 
         .intro-block p.intro {
@@ -241,7 +241,6 @@
 
     <script>
         // --- 1. CONFIGURATION ---
-        // Add your JSON file paths here. As you evaluate new models, add them to this array.
         const modelFiles = [
             "data/resnet50_results.json",
             "data/densenet121_results.json",
@@ -263,19 +262,15 @@
                     if (!response.ok) throw new Error("File not found");
                     const data = await response.json();
                     
-                    // Extract model name from filename (e.g., 'data/resnet50_results.json' -> 'resnet50')
                     const modelName = file.split('/').pop().replace('_results.json', '');
 
-                    // Safe extraction logic handling the nested adapter formats
                     const getStat = (path) => {
                         try {
                             const arr = path.reduce((obj, key) => obj[key], data);
                             if (Array.isArray(arr)) {
-                                // Clustering JSON has a dict at [0], mean at [1], std at [2]
                                 if (typeof arr[0] === 'object') {
                                     return { mean: arr[1], std: arr[2] };
                                 }
-                                // Standard [mean, std] array
                                 return { mean: arr[0], std: arr[1] };
                             }
                             return { mean: 0, std: 0 };
@@ -310,12 +305,11 @@
         // --- 3. RENDER TABLE ---
         function renderTable(results) {
             const tbody = document.getElementById('table-body');
-            tbody.innerHTML = ""; // Clear existing
+            tbody.innerHTML = ""; 
 
             results.forEach(res => {
                 const tr = document.createElement('tr');
                 
-                // Helper to format table cells with data attributes for easy sorting
                 const createCell = (val, text) => `<td data-value="${val}">${text}</td>`;
                 const formatMetric = (metric) => {
                     const meanStr = metric.mean.toFixed(3);
@@ -344,7 +338,7 @@
             const table = document.getElementById("leaderboard");
             let rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
             switching = true;
-            dir = "desc"; // Default to descending (higher is usually better)
+            dir = "desc"; 
             
             while (switching) {
                 switching = false;
@@ -355,7 +349,6 @@
                     x = rows[i].getElementsByTagName("TD")[n].getAttribute("data-value");
                     y = rows[i + 1].getElementsByTagName("TD")[n].getAttribute("data-value");
                     
-                    // Parse as float if numeric, else keep as string (for Model Name)
                     let cmpX = isNaN(parseFloat(x)) ? x.toLowerCase() : parseFloat(x);
                     let cmpY = isNaN(parseFloat(y)) ? y.toLowerCase() : parseFloat(y);
 
