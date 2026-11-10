@@ -214,7 +214,7 @@
                             <th onclick="sortTable(4)">KNN mAUC (Class.) &#x21D5;</th>
                             <th onclick="sortTable(5)">LogReg F1 (Class.) &#x21D5;</th>
                             <th onclick="sortTable(6)">LogReg mAUC (Class.) &#x21D5;</th>
-                            <th onclick="sortTable(7)">Recall@5 (Ret.) &#x21D5;</th>
+                            <th onclick="sortTable(7)">Hit@5 (Ret.) &#x21D5;</th>
                             <th onclick="sortTable(8)">mAP (Ret.) &#x21D5;</th>
                             <th onclick="sortTable(9)">NMI (Clust.) &#x21D5;</th>
                         </tr>
@@ -292,7 +292,7 @@
                         knn_mauc: getStat(['Classification', 'knn_cv', 'mauc']),
                         logreg_f1: getStat(['Classification', 'logreg_cv', 'f1']),
                         logreg_mauc: getStat(['Classification', 'logreg_cv', 'mauc']),
-                        recall: getStat(['Retrieval', 'recall@5']),
+                        hit: getStat(['Retrieval', 'hit@5']),
                         map: getStat(['Retrieval', 'map']),
                         nmi: getStat(['Clustering', 'nmi'])
                     };
@@ -331,7 +331,7 @@
                     ${createCell(res.knn_mauc.mean, formatMetric(res.knn_mauc))}
                     ${createCell(res.logreg_f1.mean, formatMetric(res.logreg_f1))}
                     ${createCell(res.logreg_mauc.mean, formatMetric(res.logreg_mauc))}
-                    ${createCell(res.recall.mean, formatMetric(res.recall))}
+                    ${createCell(res.hit.mean, formatMetric(res.hit))}
                     ${createCell(res.map.mean, formatMetric(res.map))}
                     ${createCell(res.nmi.mean, formatMetric(res.nmi))}
                 `;
@@ -385,7 +385,7 @@
             
             const labels = results.map(r => r.name);
             const mlpData = results.map(r => r.mlp_f1.mean);
-            const recallData = results.map(r => r.recall.mean);
+            const hitData = results.map(r => r.hit.mean);
             const nmiData = results.map(r => r.nmi.mean);
 
             new Chart(ctx, {
@@ -401,8 +401,8 @@
                             borderWidth: 1
                         },
                         {
-                            label: 'Recall@5 (Retrieval)',
-                            data: recallData,
+                            label: 'Hit@5 (Retrieval)',
+                            data: hitData,
                             backgroundColor: 'rgba(75, 192, 192, 0.7)',
                             borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 1
